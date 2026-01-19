@@ -1,0 +1,37 @@
+Scenario
+
+A production Linux server suddenly starts responding slowly. Users report delays, but the server is still reachable via SSH.
+
+Task
+
+1.) Which Linux commands would you run first to identify whether the issue is related to CPU, memory, or disk?
+
+2.) Briefly explain what you look for in the output of each command.
+
+Answer - 
+i) CPU check using top or mpstat
+What i will check
+ %us / %sys - high value means high CPU usage.
+ %id - very low idle time means CPU saturation.
+ Load average(1,5,15) to cpu cores.
+In top, identify the process consuming high CPU.
+
+ii) Memory check using free -h
+What I check:
+Available memory (not just free)
+High usage of swap (indicates memory pressure)
+If swap is actively being used == performance issue
+
+iii) Disk Usage using df -h
+What I check:
+Any filesystem > 80–90% full
+Root (/) or /var full → can cause services to fail
+
+iv) Disk I/O (Very Important in Real Life) using iostat -x or top (checking %wa i.e I/O wait)command.
+What I check:
+High %wa → disk bottleneck
+High await or %util → slow disks
+
+
+
+
