@@ -1,0 +1,51 @@
+Question 2 (Intermediate)
+Scenario
+A Linux server is running a critical application. Users complain that the application randomly becomes unresponsive, but CPU and memory usage look normal.
+Task
+How would you check if the issue is related to network connectivity or port availability?
+List the exact commands you would use and what you’d look for in their output.
+
+
+Solution:- 
+
+1️) Check Basic Network Connectivity
+ping -c 4 <server_ip>
+What I look for:
+Packet loss → network issue
+High latency → unstable or congested network
+
+2️) Trace Network Path & Latency
+traceroute <server_ip>
+or (better)
+mtr <server_ip>
+What I look for:
+High latency or packet loss at specific hops
+Timeouts indicating routing or firewall issues
+
+3️) Check If Application Port Is Listening
+ss -lntp | grep 8080
+(or netstat -lntp on older systems)
+What I look for:
+Is the application actually listening on the expected port?
+Which process owns the port?
+
+4️) Check Active Connections
+ss -ant | grep 8080
+What I look for:
+Large number of SYN_RECV or CLOSE_WAIT
+Indicates network issues or app not closing connections properly
+
+5️) Verify Service Status
+systemctl status <service_name>
+
+What I look for:
+Frequent restarts
+Service running but not responding
+
+6️) Firewall Check (Often Missed by Freshers)
+iptables -L -n
+or
+firewall-cmd --list-all
+
+What I look for:
+Port blocked or dropped packets
